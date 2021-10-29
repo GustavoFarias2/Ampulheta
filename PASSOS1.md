@@ -7,7 +7,7 @@ este arquivo foi criado apenas com intuito de abstrair a lógica durante o desen
 ### metas
 
 - (x) renderizar a ampulheta
-- atualizar ela a cada certo tempo
+- atualizar ela a cada certo tempo e receber valor do usuario
 - a cada atualização mudar o posicionamento da areia
 
 ### renderizar a ampulheta
