@@ -6,37 +6,53 @@ const rl = readline.createInterface({
 });
 
 const runTimer = async (lines) => {
-  console.clear();
+  const lineState = Array.from(
+    {
+      length: lines + 2,
+    },
+    (_, index) => index < lines / 2
+  );
 
-  renderTable(lines);
   setInterval(() => {
     console.clear();
 
-    renderTable(lines);
+    moveSand(lineState);
+
+    renderTable(lines, lineState);
   }, 1000);
 };
 
-const renderTable = (maxLines) => {
+const moveSand = (lineState) => {
+  // Change first sand to false (not sand)
+  const firstSandIndex = lineState.findIndex((item) => item);
+  lineState[firstSandIndex] && (lineState[firstSandIndex] = false);
+
+  // Change first sand to true (sand)
+  const lastSpaceIndex = lineState.reverse().findIndex((item) => !item);
+  !lineState[firstSandIndex] && (lineState[lastSpaceIndex] = true);
+  lineState.reverse();
+};
+
+const renderTable = (maxLines, lineState) => {
   // criar um espaço da linha de comando
   console.log();
 
   for (let line = 1; line <= maxLines; line++) {
-    renderLine(line, maxLines);
+    renderLine(line, maxLines, lineState);
   }
 };
 
-const renderLine = (line, maxLines) => {
+const renderLine = (line, maxLines, lineState) => {
   if (line === 1 || line === maxLines) {
     console.log("  " + "#".repeat(maxLines));
   } else {
-    renderCell(line, maxLines);
+    renderCell(line, maxLines, lineState[line]);
   }
 };
 
-const renderCell = (line, maxLines) => {
+const renderCell = (line, maxLines, isSand) => {
   if (line > maxLines / 2) {
     const isImpar = maxLines % 2;
-
     const outsideSpace = maxLines - line - 1;
     const middleSpace =
       (Math.floor(maxLines / 2) - line + 1) * -2 - (isImpar ? 1 : 0);
@@ -45,7 +61,7 @@ const renderCell = (line, maxLines) => {
       "  |" +
         " ".repeat(outsideSpace) +
         "#" +
-        "#".repeat(middleSpace >= 0 ? middleSpace : 0) +
+        `${isSand ? "s" : " "}`.repeat(middleSpace >= 0 ? middleSpace : 0) +
         "#".repeat(middleSpace < 0 ? 0 : 1) +
         " ".repeat(outsideSpace) +
         "|"
@@ -58,7 +74,7 @@ const renderCell = (line, maxLines) => {
       "  |" +
         " ".repeat(outsideSpace) +
         "#" +
-        " ".repeat(middleSpace) +
+        `${isSand ? "s" : " "}`.repeat(middleSpace) +
         "#" +
         " ".repeat(outsideSpace) +
         "|"
