@@ -2,8 +2,6 @@
   Ampulheta
 </h1>
 
-##
-
 <p align="center">
   <img src="https://github.com/GustavoFarias2/ReadMeImages/blob/master/outdoors/Amp.png" />
 </p>
